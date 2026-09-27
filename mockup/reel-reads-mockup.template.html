@@ -1,0 +1,582 @@
+<title>Reel Reads — feed mockup</title>
+<style>
+  :root {
+    --bone: #F7F6F2;
+    --ink: #1A1A1A;
+    --forest: #1E4A38;
+    --forest-soft: #2f6a51;
+    --stone: #8A8578;
+    --stage: #E7E4DB;
+    --shell-ink: var(--ink);
+    --shell-sub: var(--stone);
+    --hair: rgba(26,26,26,.10);
+    --serif: ui-serif, "New York", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --stage:#0d0f0c; --shell-ink:#EDEAE2; --shell-sub:#9a9488; --hair:rgba(237,234,226,.12); }
+  }
+  :root[data-theme="light"] { --stage:#E7E4DB; --shell-ink:var(--ink); --shell-sub:var(--stone); --hair:rgba(26,26,26,.10); }
+  :root[data-theme="dark"]  { --stage:#0d0f0c; --shell-ink:#EDEAE2; --shell-sub:#9a9488; --hair:rgba(237,234,226,.12); }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: var(--sans);
+    background: radial-gradient(120% 80% at 50% -10%, color-mix(in srgb, var(--forest) 10%, var(--stage)), var(--stage) 60%);
+    color: var(--shell-ink);
+    min-height: 100dvh;
+    display: grid; align-items: center; justify-items: center;
+    padding: 28px 16px;
+  }
+
+  .wrap { display: grid; grid-template-columns: minmax(0, 320px) auto; gap: 48px; align-items: center; max-width: 820px; }
+  .pitch .mark { font-family: var(--serif); font-weight: 600; letter-spacing: .22em; text-transform: uppercase; font-size: 15px; color: var(--forest-soft); }
+  .pitch h1 { font-family: var(--serif); font-weight: 500; font-size: 34px; line-height: 1.12; text-wrap: balance; margin: 14px 0 12px; letter-spacing: -.01em; }
+  .pitch p { font-size: 15px; line-height: 1.55; color: var(--shell-sub); max-width: 34ch; margin: 0 0 20px; }
+  .pitch .legend { display: flex; flex-direction: column; gap: 10px; font-size: 13px; color: var(--shell-sub); border-top: 1px solid var(--hair); padding-top: 16px; }
+  .pitch .legend b { color: var(--shell-ink); font-weight: 600; }
+  .pitch .legend .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--forest-soft); margin-right:8px; vertical-align: middle; }
+
+  .phone { position: relative; width: 372px; height: 780px; border-radius: 46px; background: #000; padding: 10px;
+    box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 30px 60px -20px rgba(20,25,18,.55), 0 8px 20px -8px rgba(20,25,18,.4); }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: #0c0b09; }
+  .notch { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 116px; height: 28px; background: #000; border-radius: 16px; z-index: 40; }
+
+  .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between;
+    padding: 46px 18px 20px; background: linear-gradient(to bottom, rgba(0,0,0,.42), rgba(0,0,0,0)); pointer-events: none; transition: opacity .3s; }
+  .topbar .brand { font-family: var(--serif); color: #fff; font-size: 15px; letter-spacing: .2em; text-transform: uppercase; font-weight: 600; text-shadow: 0 1px 8px rgba(0,0,0,.4); }
+  .topbar .brand span { opacity: .75; font-weight: 400; }
+  .adaptive { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #fff; letter-spacing: .02em;
+    background: rgba(255,255,255,.16); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.22); padding: 5px 9px; border-radius: 999px; }
+  .adaptive::before { content:""; width:6px; height:6px; border-radius:50%; background: #7ee6b4; box-shadow: 0 0 8px #7ee6b4; }
+  .screen.focusmode .topbar { opacity: 0; }
+
+  .feed { position: absolute; inset: 0; overflow-y: scroll; scroll-snap-type: y mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .feed::-webkit-scrollbar { display: none; }
+  .screen.focusmode .feed { scroll-snap-type: none; overflow: hidden; }
+
+  .card { position: relative; height: 100%; scroll-snap-align: start; scroll-snap-stop: always;
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 0 74px 58px 20px; color: #fff; isolation: isolate; overflow: hidden; }
+  .card .wash { position: absolute; inset: 0; z-index: -4; }
+  .card canvas.v { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -3; display: block; }
+  #card-bo { background: radial-gradient(120% 90% at 30% 10%, #14506a 0%, #0d3550 45%, #06192a 100%); }
+  .card .bgvideo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -3; background: transparent; display: block; }
+  .card .scrim { position: absolute; inset: 0; z-index: -1; transition: opacity .3s;
+    background: linear-gradient(to top, rgba(0,0,0,.74) 4%, rgba(0,0,0,.34) 34%, rgba(0,0,0,.12) 60%, rgba(0,0,0,.30) 100%); }
+  .card .scrim::after { content:""; position:absolute; inset:0; opacity:.09; mix-blend-mode: overlay; pointer-events:none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>"); }
+
+  .topic { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,.82);
+    display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .topic .tag { padding: 4px 9px; border-radius: 999px; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(6px); }
+  .served { font-family: var(--sans); font-size: 11px; letter-spacing: 0; text-transform: none; font-weight: 400; font-style: italic; color: rgba(255,255,255,.72); }
+  .hook { font-family: var(--serif); font-weight: 500; font-size: 33px; line-height: 1.1; letter-spacing: -.015em; text-wrap: balance;
+    margin: 0 0 14px; text-shadow: 0 2px 22px rgba(0,0,0,.4); max-width: 15ch; }
+  .idea { font-size: 15.5px; line-height: 1.55; color: rgba(255,255,255,.92); max-width: 34ch; margin: 0 0 14px; text-shadow: 0 1px 10px rgba(0,0,0,.4); }
+  .why { font-size: 13.5px; line-height: 1.5; color: #fff; padding-left: 12px; border-left: 2px solid #7ee6b4; max-width: 32ch; margin: 0 0 18px; font-weight: 500; }
+
+  .authorvid { -webkit-appearance: none; appearance: none; border: 0; cursor: pointer;
+    display: flex; align-items: center; gap: 10px; width: max-content; max-width: 100%;
+    background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(8px);
+    padding: 7px 14px 7px 7px; border-radius: 999px; margin: 0 0 18px; color: #fff; font-family: var(--sans);
+    transition: background .18s ease, transform .18s ease; }
+  .authorvid:hover { background: rgba(255,255,255,.2); }
+  .authorvid:active { transform: scale(.97); }
+  .authorvid:focus-visible { outline: 2px solid #7ee6b4; outline-offset: 2px; }
+  .av-thumb { width: 34px; height: 34px; border-radius: 50%; flex: 0 0 auto; display: grid; place-items: center;
+    background: linear-gradient(135deg, #2f6a51, #163a2b); position: relative; }
+  .av-thumb svg { width: 13px; height: 13px; fill: #fff; margin-left: 2px; }
+  .av-thumb::after { content:""; position: absolute; inset: -3px; border-radius: 50%; border: 1.5px solid rgba(126,230,180,.5); }
+  .authorvid.playing .av-thumb::after { animation: ring 1.5s ease-out infinite; }
+  @keyframes ring { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(1.5); opacity: 0; } }
+  .av-meta { display: flex; flex-direction: column; line-height: 1.25; text-align: left; }
+  .av-t { font-size: 12.5px; font-weight: 600; }
+  .av-s { font-size: 10.5px; color: rgba(255,255,255,.74); display: flex; align-items: center; gap: 6px; margin-top: 1px; }
+  .av-ai { font-size: 8.5px; font-weight: 700; letter-spacing: .08em; padding: 1px 4px; border-radius: 4px; background: rgba(126,230,180,.92); color: #0e2019; }
+
+  .book { display: flex; align-items: center; gap: 9px; font-size: 13px; color: rgba(255,255,255,.9); padding-top: 14px; border-top: 1px solid rgba(255,255,255,.18); }
+  .book .cap { width: 30px; height: 30px; border-radius: 7px; flex: 0 0 auto; display: grid; place-items: center; font-family: var(--serif); font-weight: 600; font-size: 14px; color: #1a1a1a; background: rgba(255,255,255,.9); }
+  .book b { font-weight: 600; }
+  .book .author { color: rgba(255,255,255,.7); }
+
+  .rail { position: absolute; right: 14px; bottom: 150px; z-index: 5; display: flex; flex-direction: column; gap: 20px; align-items: center; transition: opacity .3s; }
+  .rail button { -webkit-appearance: none; appearance: none; border: 0; background: transparent; color: #fff; display: flex; flex-direction: column; align-items: center; gap: 5px; font-family: var(--sans); font-size: 11px; cursor: pointer; padding: 0; }
+  .rail .ic { width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.22); backdrop-filter: blur(8px); display: grid; place-items: center; transition: transform .18s ease, background .18s ease; }
+  .rail button:hover .ic { background: rgba(255,255,255,.26); }
+  .rail button:active .ic { transform: scale(.9); }
+  .rail svg { width: 22px; height: 22px; fill: none; stroke: #fff; stroke-width: 1.8; }
+  .rail button.saved .ic { background: #1E4A38; border-color: #2f6a51; }
+  .rail button.saved svg { fill: #7ee6b4; stroke: #7ee6b4; }
+  .rail button:focus-visible .ic { outline: 2px solid #7ee6b4; outline-offset: 3px; }
+  .screen.focusmode .rail { opacity: 0; pointer-events: none; }
+
+  .rail-progress { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); z-index: 5; display: flex; flex-direction: column; gap: 6px; transition: opacity .3s; }
+  .rail-progress i { width: 3px; height: 14px; border-radius: 3px; background: rgba(255,255,255,.28); transition: background .2s, height .2s; }
+  .rail-progress i.on { background: #fff; height: 20px; }
+  .screen.focusmode .rail-progress { opacity: 0; }
+
+  .hint { position: absolute; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 6; color: rgba(255,255,255,.85);
+    font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; display: flex; align-items: center; gap: 6px;
+    pointer-events: none; padding: 6px 12px; border-radius: 999px; background: rgba(0,0,0,.28); backdrop-filter: blur(6px); transition: opacity .4s ease; }
+  .hint svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; animation: bob 1.8s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(2px); } 50% { transform: translateY(-3px); } }
+
+  .card .topic, .card .hook, .card .idea, .card .why, .card .authorvid, .card .book {
+    opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .card.in .topic    { transition-delay: .04s; }
+  .card.in .hook     { transition-delay: .10s; }
+  .card.in .idea     { transition-delay: .18s; }
+  .card.in .why      { transition-delay: .26s; }
+  .card.in .authorvid{ transition-delay: .32s; }
+  .card.in .book     { transition-delay: .38s; }
+  .card.in .topic, .card.in .hook, .card.in .idea, .card.in .why, .card.in .authorvid, .card.in .book { opacity: 1; transform: none; }
+
+  /* --- TikTok-style synced captions (ambient + focus) --- */
+  .captions { position: absolute; left: 22px; right: 22px; bottom: 178px; z-index: 6; text-align: center; pointer-events: none; transition: opacity .2s; }
+  .captions .cap-txt { display: inline-block; font-family: var(--sans); font-weight: 800; font-size: 23px; line-height: 1.3;
+    color: #fff; letter-spacing: -.01em; background: rgba(0,0,0,.36); padding: 3px 9px; border-radius: 8px;
+    text-shadow: 0 1px 6px rgba(0,0,0,.55); }
+  .captions .cap-txt:empty { display: none; }
+  .captions .cap-txt.pop { animation: cappop .22s ease; }
+  @keyframes cappop { from { transform: scale(.9); opacity: .35; } to { transform: scale(1); opacity: 1; } }
+  .card.ended .captions { opacity: 0 !important; }
+  @media (prefers-reduced-motion: reduce) { .captions .cap-txt.pop { animation: none; } }
+  /* video card: pin title to the top so captions own the lower third */
+  #card-bo .topic { position: absolute; top: 96px; left: 20px; right: 74px; z-index: 5; margin: 0; }
+  #card-bo .hook { position: absolute; top: 124px; left: 20px; right: 20px; z-index: 5; margin: 0; max-width: 13ch; font-size: 30px; }
+
+  /* --- player (focus) mode for the video card --- */
+  .card.playing .topic, .card.playing .hook, .card.playing .idea, .card.playing .why, .card.playing .authorvid, .card.playing .book {
+    opacity: 0 !important; transform: none; pointer-events: none; transition: opacity .3s ease; }
+  .card.playing .scrim { opacity: 0; }
+  .player-ui { position: absolute; inset: 0; z-index: 7; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+  .card.playing .player-ui { opacity: 1; pointer-events: auto; }
+  .player-ui .pl-top { position: absolute; top: 46px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; }
+  .pl-btn { -webkit-appearance: none; appearance: none; border: 1px solid rgba(255,255,255,.25); background: rgba(0,0,0,.35); backdrop-filter: blur(8px);
+    color: #fff; font-family: var(--sans); font-size: 12px; border-radius: 999px; padding: 7px 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .pl-btn:hover { background: rgba(0,0,0,.5); }
+  .pl-btn svg { width: 15px; height: 15px; fill: currentColor; }
+  .pl-scrub { position: absolute; left: 16px; right: 16px; bottom: 24px; height: 3px; border-radius: 3px; background: rgba(255,255,255,.28); overflow: hidden; }
+  .pl-scrub i { display: block; height: 100%; width: 0%; background: #7ee6b4; border-radius: 3px; }
+  .pl-caption { position: absolute; left: 16px; right: 16px; bottom: 40px; color: rgba(255,255,255,.9); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; display: flex; align-items: center; gap: 7px; }
+  .pl-caption .av-ai { text-transform: none; }
+
+  /* --- end card --- */
+  .endcard { position: absolute; inset: 0; z-index: 8; opacity: 0; pointer-events: none; transition: opacity .4s ease;
+    display: flex; flex-direction: column; justify-content: center; padding: 34px 26px;
+    background: linear-gradient(to top, rgba(4,14,20,.94), rgba(6,20,28,.86)); backdrop-filter: blur(3px); color: #fff; }
+  .card.ended .endcard { opacity: 1; pointer-events: auto; }
+  .card.ended .player-ui { opacity: 0; pointer-events: none; }
+  .endcard .ec-label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: #7ee6b4; font-weight: 600; margin-bottom: 6px; }
+  .endcard h3 { font-family: var(--serif); font-weight: 500; font-size: 25px; line-height: 1.12; margin: 0 0 18px; text-wrap: balance; }
+  .endcard ol { list-style: none; counter-reset: t; margin: 0 0 22px; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+  .endcard li { counter-increment: t; position: relative; padding-left: 34px; font-size: 14px; line-height: 1.45; color: rgba(255,255,255,.92); }
+  .endcard li::before { content: counter(t); position: absolute; left: 0; top: -1px; width: 23px; height: 23px; border-radius: 50%;
+    background: rgba(126,230,180,.16); border: 1px solid rgba(126,230,180,.55); color: #7ee6b4; font-family: var(--serif); font-size: 13px; display: grid; place-items: center; }
+  .ec-actions { display: flex; gap: 10px; }
+  .ec-more { flex: 1; text-align: center; text-decoration: none; background: #1E4A38; border: 1px solid #2f6a51; color: #eafff4; font-weight: 600; font-size: 14px; padding: 13px; border-radius: 13px; cursor: pointer; }
+  .ec-more:hover { background: #245a44; }
+  .ec-replay { -webkit-appearance: none; appearance: none; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); color: #fff; font-family: var(--sans); font-weight: 600; font-size: 14px; padding: 13px 16px; border-radius: 13px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; }
+  .ec-replay:hover { background: rgba(255,255,255,.18); }
+  .ec-replay svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 2; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card .topic, .card .hook, .card .idea, .card .why, .card .authorvid, .card .book { opacity: 1; transform: none; transition: none; }
+    .hint svg, .authorvid.playing .av-thumb::after { animation: none; }
+  }
+
+  .w-strategy    { background: radial-gradient(120% 90% at 30% 12%, #3f7d63 0%, #234b3c 42%, #10201a 100%); }
+  .w-behavioural { background: radial-gradient(120% 90% at 72% 16%, #d69a4e 0%, #9a5f2c 44%, #331d0f 100%); }
+  .w-entrepr     { background: radial-gradient(120% 90% at 28% 14%, #c9764f 0%, #8a3f2b 46%, #2c140f 100%); }
+  .w-operations  { background: radial-gradient(120% 90% at 68% 12%, #5b7089 0%, #34435c 46%, #141b26 100%); }
+  .w-risk        { background: radial-gradient(120% 90% at 30% 16%, #7c5a86 0%, #43304f 44%, #1a1220 100%); }
+  .w-game        { background: radial-gradient(120% 90% at 74% 14%, #6f7d3a 0%, #43502a 46%, #171d12 100%); }
+  .w-innovation  { background: radial-gradient(120% 90% at 30% 12%, #c06a3a 0%, #7d3c22 46%, #2a1410 100%); }
+  .w-economics   { background: radial-gradient(120% 90% at 70% 16%, #c6a24e 0%, #8a6a26 44%, #2e2410 100%); }
+
+  @media (max-width: 720px) {
+    body { padding: 0; align-items: stretch; }
+    .wrap { grid-template-columns: 1fr; gap: 0; max-width: none; width: 100%; }
+    .pitch { display: none; }
+    .phone { width: 100vw; height: 100dvh; border-radius: 0; padding: 0; box-shadow: none; }
+    .screen { border-radius: 0; }
+    .notch { display: none; }
+    .topbar { padding-top: max(28px, env(safe-area-inset-top)); }
+  }
+</style>
+
+<div class="wrap">
+  <aside class="pitch">
+    <div class="mark">Reel Reads</div>
+    <h1>The same swipe. The opposite outcome.</h1>
+    <p>A video feed where every card is a 20-second idea from a book. Seeded with the books your professors actually assign. The feed learns what you linger on and serves the next idea, the way TikTok serves the next video.</p>
+    <div class="legend">
+      <div><span class="dot"></span><b>Card 1 is live:</b> a real AI author video plays muted. Tap it for sound and the takeaways.</div>
+      <div><span class="dot"></span><b>Video-native:</b> ambient in the feed, full-screen when you are interested.</div>
+      <div><span class="dot"></span><b>The wedge:</b> watch the italic "served because..." line adapt.</div>
+    </div>
+  </aside>
+
+  <div class="phone">
+    <div class="screen" id="screen">
+      <div class="notch"></div>
+      <div class="topbar">
+        <div class="brand">Reel <span>Reads</span></div>
+        <div class="adaptive">Adaptive feed</div>
+      </div>
+
+      <div class="feed" id="feed">
+        <!-- CARD 1: real AI author video -->
+        <article class="card" data-v="strategy" id="card-bo">
+          <video class="bgvideo" id="boVideo" muted loop playsinline preload="auto" poster="__BLUEOCEAN_POSTER__"></video>
+          <div class="scrim"></div>
+          <div class="captions" id="boCaptions" aria-hidden="true"><span class="cap-txt"></span></div>
+          <div class="topic"><span class="tag">Strategy</span></div>
+          <h2 class="hook">Stop fighting for the ocean. Make a new one.</h2>
+          <button class="authorvid" type="button" id="boPlay"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Hear the author explain it</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; tap for sound</span></span></button>
+          <div class="book"><span class="cap">B</span><span><b>Blue Ocean Strategy</b> <span class="author">&middot; Kim &amp; Mauborgne</span></span></div>
+
+          <!-- player controls (focus mode) -->
+          <div class="player-ui">
+            <div class="pl-top">
+              <button class="pl-btn pl-back" type="button"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7z"/></svg> Feed</button>
+              <button class="pl-btn pl-mute" type="button"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="2"/></svg> Sound on</button>
+            </div>
+            <div class="pl-caption"><span class="av-ai">AI</span> AI narrator &middot; illustrative</div>
+            <div class="pl-scrub"><i></i></div>
+          </div>
+
+          <!-- end card -->
+          <div class="endcard">
+            <div class="ec-label">Blue Ocean Strategy &middot; the takeaways</div>
+            <h3>3 things to remember</h3>
+            <ol>
+              <li>Stop fighting in bloody "red oceans". Create uncontested market space where the competition is irrelevant.</li>
+              <li>Chase value innovation: lift buyer value and cut cost at the same time, breaking the value-cost trade-off.</li>
+              <li>Redraw the market with the Strategy Canvas and the Four Actions: eliminate, reduce, raise, create.</li>
+            </ol>
+            <div class="ec-actions">
+              <button class="ec-replay" type="button"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg> Replay</button>
+              <a class="ec-more" href="https://www.blueoceanstrategy.com" target="_blank" rel="noopener">Learn more</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-v="behavioural">
+          <div class="wash w-behavioural"></div><canvas class="v"></canvas><div class="scrim"></div>
+          <div class="topic"><span class="tag">Behavioural</span> <span class="served">Served because you finished a Strategy card</span></div>
+          <h2 class="hook">You have two minds. One of them is lazy.</h2>
+          <p class="idea">System 1 is fast, intuitive and emotional. System 2 is slow, deliberate and effortful. Most choices run on System 1, which is why a confident snap judgment is so often a biased one.</p>
+          <p class="why">Knowing which system is driving lets you catch your own errors before they cost you.</p>
+          <button class="authorvid" type="button"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Kahneman on System 1 &amp; 2</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; 0:36</span></span></button>
+          <div class="book"><span class="cap">T</span><span><b>Thinking, Fast and Slow</b> <span class="author">&middot; Daniel Kahneman</span></span></div>
+        </article>
+
+        <article class="card" data-v="entrepr">
+          <div class="wash w-entrepr"></div><canvas class="v"></canvas><div class="scrim"></div>
+          <div class="topic"><span class="tag">Entrepreneurship</span></div>
+          <h2 class="hook">Stop perfecting. Start learning.</h2>
+          <p class="idea">Build the smallest thing that tests your riskiest assumption, measure how real users react, then learn. The unit of progress is validated learning, not features shipped.</p>
+          <p class="why">Most startups fail by building something nobody wants, beautifully.</p>
+          <button class="authorvid" type="button"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Ries on validated learning</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; 0:39</span></span></button>
+          <div class="book"><span class="cap">L</span><span><b>The Lean Startup</b> <span class="author">&middot; Eric Ries</span></span></div>
+        </article>
+
+        <article class="card" data-v="operations">
+          <div class="wash w-operations"></div><canvas class="v"></canvas><div class="scrim"></div>
+          <div class="topic"><span class="tag">Operations</span></div>
+          <h2 class="hook">A system is only as fast as its slowest step.</h2>
+          <p class="idea">Every process has one bottleneck that sets the pace of the whole. Improving anything that isn't the bottleneck is an illusion of progress. Find the constraint, exploit it, subordinate everything else to it.</p>
+          <p class="why">Effort spent away from the constraint produces zero real throughput.</p>
+          <button class="authorvid" type="button"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Goldratt on the bottleneck</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; 0:44</span></span></button>
+          <div class="book"><span class="cap">G</span><span><b>The Goal</b> <span class="author">&middot; Eliyahu Goldratt</span></span></div>
+        </article>
+
+        <article class="card" data-v="risk">
+          <div class="wash w-risk"></div><canvas class="v"></canvas><div class="scrim"></div>
+          <div class="topic"><span class="tag">Risk</span> <span class="served">Served because you saved an Operations idea</span></div>
+          <h2 class="hook">The rare event isn't the exception. It's the story.</h2>
+          <p class="idea">History is shaped by rare, unpredictable, high-impact events we rationalise only afterwards. We underestimate them because they are absent from the sample we learn from.</p>
+          <p class="why">Build for a world where the unimaginable is routine, not for the average day.</p>
+          <button class="authorvid" type="button"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Taleb on Black Swans</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; 0:33</span></span></button>
+          <div class="book"><span class="cap">B</span><span><b>The Black Swan</b> <span class="author">&middot; Nassim Taleb</span></span></div>
+        </article>
+
+        <article class="card" data-v="game">
+          <div class="wash w-game"></div><canvas class="v"></canvas><div class="scrim"></div>
+          <div class="topic"><span class="tag">Game theory</span></div>
+          <h2 class="hook">Think forward, reason backward.</h2>
+          <p class="idea">Put yourself in the other player's shoes, anticipate their best response to your move, then work backward to your choice today. Your best action depends entirely on theirs.</p>
+          <p class="why">Great strategists play the opponent's next three moves, not just their own.</p>
+          <button class="authorvid" type="button"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Nalebuff on reasoning back</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; 0:37</span></span></button>
+          <div class="book"><span class="cap">A</span><span><b>The Art of Strategy</b> <span class="author">&middot; Dixit &amp; Nalebuff</span></span></div>
+        </article>
+
+        <article class="card" data-v="innovation">
+          <div class="wash w-innovation"></div><canvas class="v"></canvas><div class="scrim"></div>
+          <div class="topic"><span class="tag">Innovation</span></div>
+          <h2 class="hook">Doing everything right is how great firms die.</h2>
+          <p class="idea">Incumbents listen to their best customers and invest in sustaining better products, which is exactly why they miss the cheap, worse, disruptive technology that eats their market from below.</p>
+          <p class="why">The discipline that made you win can blind you to what comes next.</p>
+          <button class="authorvid" type="button"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Christensen on disruption</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; 0:42</span></span></button>
+          <div class="book"><span class="cap">I</span><span><b>The Innovator's Dilemma</b> <span class="author">&middot; Clayton Christensen</span></span></div>
+        </article>
+
+        <article class="card" data-v="economics">
+          <div class="wash w-economics"></div><canvas class="v"></canvas><div class="scrim"></div>
+          <div class="topic"><span class="tag">Economics</span></div>
+          <h2 class="hook">People respond to incentives, even ones you didn't intend.</h2>
+          <p class="idea">Look past the moral story to the hidden incentive underneath and surprising behaviour starts to make sense. Data beats intuition when it reveals what people do, not what they say.</p>
+          <p class="why">If behaviour looks irrational, you probably haven't found the real incentive yet.</p>
+          <button class="authorvid" type="button"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Levitt on hidden incentives</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; 0:35</span></span></button>
+          <div class="book"><span class="cap">F</span><span><b>Freakonomics</b> <span class="author">&middot; Levitt &amp; Dubner</span></span></div>
+        </article>
+
+        <article class="card" data-v="entrepr">
+          <div class="wash w-entrepr"></div><canvas class="v"></canvas><div class="scrim"></div>
+          <div class="topic"><span class="tag">Entrepreneurship</span> <span class="served">Served because you linger on Entrepreneurship</span></div>
+          <h2 class="hook">Start with what you have, not what you'd need.</h2>
+          <p class="idea">Expert founders don't begin with a goal and gather resources. They begin with who they are, what they know and whom they know, then let goals emerge. Control the future by making it, not predicting it.</p>
+          <p class="why">You don't need the perfect plan. You need the next affordable step.</p>
+          <button class="authorvid" type="button"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Sarasvathy on effectuation</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; 0:40</span></span></button>
+          <div class="book"><span class="cap">E</span><span><b>Effectuation</b> <span class="author">&middot; Saras Sarasvathy</span></span></div>
+        </article>
+      </div>
+
+      <div class="rail-progress" id="dots" aria-hidden="true"></div>
+
+      <div class="rail" id="rail">
+        <button type="button" id="saveBtn" aria-pressed="false" aria-label="Save this idea">
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.9-10-9.2C.4 8.9 1.9 5.5 5.2 5.5c2 0 3.3 1.2 3.8 2.3.5-1.1 1.8-2.3 3.8-2.3 3.3 0 4.8 3.4 3.2 6.3C19.5 16.1 12 21 12 21z"/></svg></span>
+          <span id="saveLabel">Save</span>
+        </button>
+        <button type="button" aria-label="See source">
+          <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H18a2 2 0 0 1 2 2v13a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2z"/><path d="M8 4v13"/></svg></span>
+          <span>Source</span>
+        </button>
+        <button type="button" aria-label="Share">
+          <span class="ic"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8l7.6-4.3M8.2 13.2l7.6 4.3"/></svg></span>
+          <span>Share</span>
+        </button>
+      </div>
+
+      <div class="hint" id="hint">
+        <svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg> Swipe up
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>window.BO_B64 = "__BLUEOCEAN_B64__";</script>
+<script>window.BO_CUES = __BO_CUES__;</script>
+<script>
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var PALETTES = {
+      strategy:    ['#5aa982', '#2c6149', '#0e2019'],
+      behavioural: ['#e6b064', '#9a5f2c', '#2a1810'],
+      entrepr:     ['#dc8a5e', '#8a3f2b', '#26110d'],
+      operations:  ['#7089a6', '#34435c', '#101622'],
+      risk:        ['#9c76a8', '#43304f', '#160f1c'],
+      game:        ['#9aab53', '#43502a', '#131810'],
+      innovation:  ['#d17c46', '#7d3c22', '#241110'],
+      economics:   ['#dcb85f', '#8a6a26', '#261e0d']
+    };
+
+    function hexA(hex, a) {
+      var n = parseInt(hex.slice(1), 16);
+      return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+    }
+
+    function makeScene(canvas, colors) {
+      var ctx = canvas.getContext('2d');
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = 0, h = 0, raf = 0, t = 0, running = false;
+      var base = colors[colors.length - 1];
+      var blobs = colors.map(function (c, i) {
+        return {
+          c: c,
+          bx: 0.30 + 0.40 * Math.random(), by: 0.22 + 0.52 * Math.random(),
+          ax: 0.12 + 0.09 * Math.random(), ay: 0.10 + 0.08 * Math.random(),
+          sx: 0.10 + 0.05 * i + 0.05 * Math.random(), sy: 0.08 + 0.05 * i + 0.05 * Math.random(),
+          px: Math.random() * 6.283, py: Math.random() * 6.283,
+          r: 0.58 + 0.20 * i
+        };
+      });
+      function resize() {
+        w = canvas.width = Math.max(1, Math.round(canvas.offsetWidth * dpr));
+        h = canvas.height = Math.max(1, Math.round(canvas.offsetHeight * dpr));
+      }
+      function draw() {
+        if (!w || !h) resize();
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.fillStyle = base; ctx.fillRect(0, 0, w, h);
+        ctx.globalCompositeOperation = 'lighter';
+        var md = Math.max(w, h);
+        for (var i = 0; i < blobs.length; i++) {
+          var b = blobs[i];
+          var cx = (b.bx + b.ax * Math.sin(t * b.sx * 0.03 + b.px)) * w;
+          var cy = (b.by + b.ay * Math.cos(t * b.sy * 0.03 + b.py)) * h;
+          var rad = md * b.r;
+          var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+          g.addColorStop(0, hexA(b.c, 0.50));
+          g.addColorStop(0.5, hexA(b.c, 0.16));
+          g.addColorStop(1, hexA(b.c, 0));
+          ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+        }
+      }
+      function frame() { t += 1; draw(); raf = requestAnimationFrame(frame); }
+      return {
+        start: function () { if (running) return; running = true; resize(); if (reduce) { draw(); return; } raf = requestAnimationFrame(frame); },
+        stop: function () { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; },
+        resize: function () { if (running) resize(); }
+      };
+    }
+
+    var screenEl = document.getElementById('screen');
+    var feed = document.getElementById('feed');
+    var cards = Array.prototype.slice.call(feed.querySelectorAll('.card'));
+    var dotsWrap = document.getElementById('dots');
+    var saveBtn = document.getElementById('saveBtn');
+    var saveLabel = document.getElementById('saveLabel');
+    var hint = document.getElementById('hint');
+
+    var cardScene = new Map();
+    cards.forEach(function (card) {
+      var cv = card.querySelector('canvas.v');
+      if (cv) {
+        var pal = PALETTES[card.getAttribute('data-v')] || PALETTES.strategy;
+        cardScene.set(card, makeScene(cv, pal));
+      }
+    });
+
+    cards.forEach(function () { dotsWrap.appendChild(document.createElement('i')); });
+    var dots = Array.prototype.slice.call(dotsWrap.children);
+
+    var saved = {}, current = 0;
+    function reflectSave() {
+      var on = !!saved[current];
+      saveBtn.classList.toggle('saved', on);
+      saveBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      saveLabel.textContent = on ? 'Saved' : 'Save';
+    }
+    saveBtn.addEventListener('click', function () { saved[current] = !saved[current]; reflectSave(); });
+
+    // generic author pills (non-video cards) toggle a playing state
+    cards.forEach(function (card) {
+      if (card.id === 'card-bo') return;
+      var av = card.querySelector('.authorvid');
+      if (!av) return;
+      var label = av.querySelector('.av-t');
+      var original = label.textContent;
+      av.addEventListener('click', function () {
+        var playing = av.classList.toggle('playing');
+        label.textContent = playing ? 'Playing...' : original;
+      });
+    });
+
+    // ---- Blue Ocean video card ----
+    var boCard = document.getElementById('card-bo');
+    var boVideo = document.getElementById('boVideo');
+    function safePlay(v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+    if (boCard && boVideo) {
+      // decode the inlined base64 to a Blob URL (data: URIs stall on <video> in Chromium)
+      try {
+        if (window.BO_B64) {
+          var _bin = atob(window.BO_B64), _n = _bin.length, _arr = new Uint8Array(_n);
+          for (var _i = 0; _i < _n; _i++) _arr[_i] = _bin.charCodeAt(_i);
+          boVideo.src = URL.createObjectURL(new Blob([_arr], { type: 'video/mp4' }));
+        }
+      } catch (e) {}
+      var plBack = boCard.querySelector('.pl-back');
+      var plMute = boCard.querySelector('.pl-mute');
+      var plScrub = boCard.querySelector('.pl-scrub i');
+      var boPlay = boCard.querySelector('#boPlay');
+      var ecReplay = boCard.querySelector('.ec-replay');
+
+      // synced captions (TikTok-style): show the spoken words as the video plays, muted or not
+      var capTxt = boCard.querySelector('#boCaptions .cap-txt');
+      var cues = window.BO_CUES || [];
+      function updateCaption() {
+        if (!capTxt) return;
+        var t = boVideo.currentTime, txt = '';
+        for (var i = 0; i < cues.length; i++) { if (t >= cues[i][0]) txt = cues[i][1]; else break; }
+        if (capTxt.textContent !== txt) {
+          capTxt.textContent = txt;
+          capTxt.classList.remove('pop'); void capTxt.offsetWidth; if (txt) capTxt.classList.add('pop');
+        }
+      }
+      boVideo.addEventListener('timeupdate', updateCaption);
+      boVideo.addEventListener('seeked', updateCaption);
+
+      function enterFocus() {
+        boCard.classList.remove('ended');
+        boCard.classList.add('playing');
+        screenEl.classList.add('focusmode');
+        boVideo.loop = false;
+        boVideo.muted = false;
+        plMute.innerHTML = '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="2"/></svg> Sound on';
+        try { boVideo.currentTime = 0; } catch (e) {}
+        safePlay(boVideo);
+      }
+      function exitFocus() {
+        boCard.classList.remove('playing', 'ended');
+        screenEl.classList.remove('focusmode');
+        boVideo.loop = true;
+        boVideo.muted = true;
+        safePlay(boVideo);
+      }
+      boPlay.addEventListener('click', function (e) { e.stopPropagation(); enterFocus(); });
+      boVideo.addEventListener('click', function () {
+        if (!boCard.classList.contains('playing')) { enterFocus(); return; }
+        if (boVideo.paused) safePlay(boVideo); else boVideo.pause();
+      });
+      plBack.addEventListener('click', function (e) { e.stopPropagation(); exitFocus(); });
+      plMute.addEventListener('click', function (e) {
+        e.stopPropagation();
+        boVideo.muted = !boVideo.muted;
+        plMute.innerHTML = boVideo.muted
+          ? '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M17 9l4 6M21 9l-4 6" stroke="currentColor" stroke-width="2" fill="none"/></svg> Muted'
+          : '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="2"/></svg> Sound on';
+      });
+      boVideo.addEventListener('timeupdate', function () {
+        if (boVideo.duration && !boVideo.loop) plScrub.style.width = (100 * boVideo.currentTime / boVideo.duration) + '%';
+      });
+      boVideo.addEventListener('ended', function () {
+        if (!boVideo.loop) boCard.classList.add('ended');
+      });
+      ecReplay.addEventListener('click', function (e) { e.stopPropagation(); enterFocus(); });
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!(e.isIntersecting && e.intersectionRatio > 0.6)) return;
+        var card = e.target;
+        card.classList.add('in');
+        current = cards.indexOf(card);
+        dots.forEach(function (d, i) { d.classList.toggle('on', i === current); });
+        reflectSave();
+        if (current > 0 && hint) hint.style.opacity = '0';
+        cards.forEach(function (c) {
+          var sc = cardScene.get(c);
+          if (c === card) {
+            if (sc) sc.start();
+            if (c === boCard && boVideo && !boCard.classList.contains('playing')) { boVideo.muted = true; boVideo.loop = true; safePlay(boVideo); }
+          } else {
+            if (sc) sc.stop();
+            if (c === boCard && boVideo) { boVideo.pause(); boCard.classList.remove('playing', 'ended'); screenEl.classList.remove('focusmode'); boVideo.loop = true; boVideo.muted = true; }
+          }
+        });
+      });
+    }, { root: feed, threshold: [0, 0.6, 1] });
+    cards.forEach(function (c) { io.observe(c); });
+
+    window.addEventListener('resize', function () { cardScene.forEach(function (s) { s.resize(); }); });
+
+    // start on card 1 (video ambient)
+    if (cards[0]) { cards[0].classList.add('in'); dots[0].classList.add('on'); }
+    if (boVideo) { boVideo.muted = true; boVideo.loop = true; safePlay(boVideo); }
+  })();
+</script>
