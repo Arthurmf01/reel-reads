@@ -4,7 +4,7 @@
 
 Reel Reads is a concept for a video-native, swipe-first feed where every card is a 20-second idea distilled from a book. It was built as a final-project pitch for the INSEAD Gen AI course (2026), but the thesis is genuinely product-shaped: redirect an existing compulsive behaviour (doomscrolling) toward an outcome that compounds instead of rotting attention.
 
-![Reel Reads card — Blue Ocean Strategy, AI author narration, adaptive feed badge](screenshots/hero-phone.png)
+![Reel Reads demo — the Blue Ocean Strategy card, a real AI-narrated author clip playing in the feed](screenshots/reel-reads-demo.gif)
 
 ## The idea
 
