@@ -263,6 +263,38 @@
           </div>
         </article>
 
+        <!-- CARD 2: Theo Evgeniou's own framework, AI-narrated -->
+        <article class="card" data-v="strategy" id="card-theo">
+          <video class="bgvideo" id="theoVideo" muted loop playsinline preload="auto" poster="__THEO_POSTER__"></video>
+          <div class="scrim"></div>
+          <div class="captions" id="theoCaptions" aria-hidden="true"><span class="cap-txt"></span></div>
+          <div class="topic"><span class="tag">Gen AI</span></div>
+          <h2 class="hook">Learning is compression.</h2>
+          <button class="authorvid" type="button" id="theoPlay"><span class="av-thumb"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span><span class="av-meta"><span class="av-t">Hear the idea explained</span><span class="av-s"><span class="av-ai">AI</span> narrated &middot; tap for sound</span></span></button>
+          <div class="book"><span class="cap">G</span><span><b>Generative AI Product &amp; Business</b> <span class="author">&middot; Theo Evgeniou, INSEAD</span></span></div>
+
+          <div class="player-ui">
+            <div class="pl-top">
+              <button class="pl-btn pl-back" type="button"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7z"/></svg> Feed</button>
+              <button class="pl-btn pl-mute" type="button"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="2"/></svg> Sound on</button>
+            </div>
+            <div class="pl-caption"><span class="av-ai">AI</span> AI narrator &middot; illustrative</div>
+            <div class="pl-scrub"><i></i></div>
+          </div>
+
+          <div class="endcard">
+            <div class="ec-label">Gen AI Product &amp; Business &middot; the takeaway</div>
+            <h3>Why this card exists</h3>
+            <ol>
+              <li>A trillion parameters encode almost everything humanity has ever written. Intelligence compresses the world into something small enough to reason with.</li>
+              <li>Reel Reads applies the same move to a book: hundreds of pages, compressed into twenty seconds you actually remember.</li>
+            </ol>
+            <div class="ec-actions">
+              <button class="ec-replay" type="button"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4"/></svg> Replay</button>
+            </div>
+          </div>
+        </article>
+
         <article class="card" data-v="behavioural">
           <div class="wash w-behavioural"></div><canvas class="v"></canvas><div class="scrim"></div>
           <div class="topic"><span class="tag">Behavioural</span> <span class="served">Served because you finished a Strategy card</span></div>
@@ -370,6 +402,8 @@
 
 <script>window.BO_B64 = "__BLUEOCEAN_B64__";</script>
 <script>window.BO_CUES = __BO_CUES__;</script>
+<script>window.THEO_B64 = "__THEO_B64__";</script>
+<script>window.THEO_CUES = __THEO_CUES__;</script>
 <script>
   (function () {
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -550,6 +584,76 @@
       ecReplay.addEventListener('click', function (e) { e.stopPropagation(); enterFocus(); });
     }
 
+    // ---- Theo (Gen AI) video card ----
+    var theoCardEl = document.getElementById('card-theo');
+    var theoVideo = document.getElementById('theoVideo');
+    if (theoCardEl && theoVideo) {
+      try {
+        if (window.THEO_B64) {
+          var _tbin = atob(window.THEO_B64), _tn = _tbin.length, _tarr = new Uint8Array(_tn);
+          for (var _ti = 0; _ti < _tn; _ti++) _tarr[_ti] = _tbin.charCodeAt(_ti);
+          theoVideo.src = URL.createObjectURL(new Blob([_tarr], { type: 'video/mp4' }));
+        }
+      } catch (e) {}
+      var tPlBack = theoCardEl.querySelector('.pl-back');
+      var tPlMute = theoCardEl.querySelector('.pl-mute');
+      var tPlScrub = theoCardEl.querySelector('.pl-scrub i');
+      var theoPlay = theoCardEl.querySelector('#theoPlay');
+      var tEcReplay = theoCardEl.querySelector('.ec-replay');
+
+      var tCapTxt = theoCardEl.querySelector('#theoCaptions .cap-txt');
+      var tCues = window.THEO_CUES || [];
+      function updateTheoCaption() {
+        if (!tCapTxt) return;
+        var t = theoVideo.currentTime, txt = '';
+        for (var i = 0; i < tCues.length; i++) { if (t >= tCues[i][0]) txt = tCues[i][1]; else break; }
+        if (tCapTxt.textContent !== txt) {
+          tCapTxt.textContent = txt;
+          tCapTxt.classList.remove('pop'); void tCapTxt.offsetWidth; if (txt) tCapTxt.classList.add('pop');
+        }
+      }
+      theoVideo.addEventListener('timeupdate', updateTheoCaption);
+      theoVideo.addEventListener('seeked', updateTheoCaption);
+
+      function enterTheoFocus() {
+        theoCardEl.classList.remove('ended');
+        theoCardEl.classList.add('playing');
+        screenEl.classList.add('focusmode');
+        theoVideo.loop = false;
+        theoVideo.muted = false;
+        tPlMute.innerHTML = '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="2"/></svg> Sound on';
+        try { theoVideo.currentTime = 0; } catch (e) {}
+        safePlay(theoVideo);
+      }
+      function exitTheoFocus() {
+        theoCardEl.classList.remove('playing', 'ended');
+        screenEl.classList.remove('focusmode');
+        theoVideo.loop = true;
+        theoVideo.muted = true;
+        safePlay(theoVideo);
+      }
+      theoPlay.addEventListener('click', function (e) { e.stopPropagation(); enterTheoFocus(); });
+      theoVideo.addEventListener('click', function () {
+        if (!theoCardEl.classList.contains('playing')) { enterTheoFocus(); return; }
+        if (theoVideo.paused) safePlay(theoVideo); else theoVideo.pause();
+      });
+      tPlBack.addEventListener('click', function (e) { e.stopPropagation(); exitTheoFocus(); });
+      tPlMute.addEventListener('click', function (e) {
+        e.stopPropagation();
+        theoVideo.muted = !theoVideo.muted;
+        tPlMute.innerHTML = theoVideo.muted
+          ? '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M17 9l4 6M21 9l-4 6" stroke="currentColor" stroke-width="2" fill="none"/></svg> Muted'
+          : '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4z"/><path d="M16 8a5 5 0 0 1 0 8" fill="none" stroke="currentColor" stroke-width="2"/></svg> Sound on';
+      });
+      theoVideo.addEventListener('timeupdate', function () {
+        if (theoVideo.duration && !theoVideo.loop) tPlScrub.style.width = (100 * theoVideo.currentTime / theoVideo.duration) + '%';
+      });
+      theoVideo.addEventListener('ended', function () {
+        if (!theoVideo.loop) theoCardEl.classList.add('ended');
+      });
+      tEcReplay.addEventListener('click', function (e) { e.stopPropagation(); enterTheoFocus(); });
+    }
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!(e.isIntersecting && e.intersectionRatio > 0.6)) return;
@@ -564,9 +668,11 @@
           if (c === card) {
             if (sc) sc.start();
             if (c === boCard && boVideo && !boCard.classList.contains('playing')) { boVideo.muted = true; boVideo.loop = true; safePlay(boVideo); }
+            if (c === theoCardEl && theoVideo && !theoCardEl.classList.contains('playing')) { theoVideo.muted = true; theoVideo.loop = true; safePlay(theoVideo); }
           } else {
             if (sc) sc.stop();
             if (c === boCard && boVideo) { boVideo.pause(); boCard.classList.remove('playing', 'ended'); screenEl.classList.remove('focusmode'); boVideo.loop = true; boVideo.muted = true; }
+            if (c === theoCardEl && theoVideo) { theoVideo.pause(); theoCardEl.classList.remove('playing', 'ended'); screenEl.classList.remove('focusmode'); theoVideo.loop = true; theoVideo.muted = true; }
           }
         });
       });
