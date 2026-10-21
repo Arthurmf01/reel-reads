@@ -27,6 +27,7 @@ Book-summary apps already exist (Blinkist, Headway, Shortform) and swipeable boo
 | `mockup/` | A self-contained, clickable HTML mockup of the feed (real AI-generated author video on the first card, ambient canvas motion on the rest) |
 | `screenshots/` | Static captures of the mockup |
 | `Docs/` | The working specification set: product spec, design system, and build/implementation strategy |
+| `library/library.json` | The growing library: every book a professor has recommended, with the course it came from. The ten seed books feed v1; new recommendations (INSEAD and the Wharton exchange) queue here until release |
 
 ### Try the mockup
 
