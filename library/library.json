@@ -1,17 +1,172 @@
 {
-  "_doc": "Reel Reads library: every book a professor recommended to Arthur, growing until release. One entry per book. status: 'seed' = in the v1 feed (Docs/Reel Reads Specifications.md, Seed catalogue), 'queued' = in the library, no cards yet, 'carded' = cards generated. Only add a book with a traceable source (course, session, or Arthur's own capture). Never atomise a course's Primary readings with AI where the course bans it (Massey OIDD/LGST 6930 does).",
+  "_doc": "Reel Reads library: every book a professor recommended to Arthur or he captured via Ambidex, growing until release. One entry per book. status: 'seed' = in the v1 feed (Docs/Reel Reads Specifications.md, Seed catalogue), 'queued' = in the library, no cards yet, 'carded' = cards generated. Only add a book with a traceable source (course, session, or Arthur's own capture). Never atomise a course's Primary readings with AI where the course bans it (Massey OIDD/LGST 6930 does).",
   "books": [
-    {"title": "Blue Ocean Strategy", "author": "W. Chan Kim and Renée Mauborgne", "domain": "Strategy", "school": "INSEAD", "source": "Introduction to Strategy; Technology and Innovation Strategy", "status": "seed"},
-    {"title": "The Lean Startup", "author": "Eric Ries", "domain": "Entrepreneurship", "school": "INSEAD", "source": "Corporate Entrepreneurship", "status": "seed"},
-    {"title": "The Innovator's Dilemma", "author": "Clayton Christensen", "domain": "Innovation", "school": "INSEAD", "source": "Technology and Innovation Strategy", "status": "seed"},
-    {"title": "Thinking, Fast and Slow", "author": "Daniel Kahneman", "domain": "Behavioural and judgment", "school": "INSEAD", "source": "Prices and Markets (recommended); Uncertainty, Data and Judgment", "status": "seed"},
-    {"title": "The Goal", "author": "Eliyahu Goldratt", "domain": "Operations", "school": "INSEAD", "source": "Process and Operations Management (textbook)", "status": "seed"},
-    {"title": "The Black Swan", "author": "Nassim Nicholas Taleb", "domain": "Risk and uncertainty", "school": "INSEAD", "source": "Understanding and Managing Risk", "status": "seed"},
-    {"title": "Against the Gods", "author": "Peter Bernstein", "domain": "Risk (history of)", "school": "INSEAD", "source": "Understanding and Managing Risk (recommended reading)", "status": "seed"},
-    {"title": "Freakonomics", "author": "Steven Levitt and Stephen Dubner", "domain": "Economics", "school": "INSEAD", "source": "Prices and Markets (recommended; Sessions 1 to 2)", "status": "seed"},
-    {"title": "The Art of Strategy", "author": "Avinash Dixit and Barry Nalebuff", "domain": "Game theory", "school": "INSEAD", "source": "Prices and Markets (recommended)", "status": "seed"},
-    {"title": "Effectuation", "author": "Saras Sarasvathy", "domain": "Entrepreneurship", "school": "INSEAD", "source": "Corporate Entrepreneurship; Realising Entrepreneurial Potential (ETA)", "status": "seed"},
-    {"title": "Power: Why Some People Have It and Others Don't", "author": "Jeffrey Pfeffer", "year": 2010, "domain": "Influence and power", "school": "Wharton", "professor": "Cade Massey", "source": "OIDD/LGST 6930 Influence, Session 1 'A Just World', secondary reading", "added": "2026-10-19", "status": "queued"},
-    {"title": "The Education of an Idealist", "author": "Samantha Power", "year": 2019, "domain": "Leadership and public service", "school": "Wharton", "professor": "Cade Massey", "source": "Arthur's capture in OIDD/LGST 6930 Influence, 19/10/2026 (the course's assigned Power reading is 'Chasing the Flame', Session 2)", "added": "2026-10-19", "status": "queued"}
+    {
+      "title": "Blue Ocean Strategy",
+      "author": "W. Chan Kim and Renée Mauborgne",
+      "domain": "Strategy",
+      "school": "INSEAD",
+      "source": "Introduction to Strategy; Technology and Innovation Strategy",
+      "status": "seed"
+    },
+    {
+      "title": "The Lean Startup",
+      "author": "Eric Ries",
+      "domain": "Entrepreneurship",
+      "school": "INSEAD",
+      "source": "Corporate Entrepreneurship",
+      "status": "seed"
+    },
+    {
+      "title": "The Innovator's Dilemma",
+      "author": "Clayton Christensen",
+      "domain": "Innovation",
+      "school": "INSEAD",
+      "source": "Technology and Innovation Strategy",
+      "status": "seed"
+    },
+    {
+      "title": "Thinking, Fast and Slow",
+      "author": "Daniel Kahneman",
+      "domain": "Behavioural and judgment",
+      "school": "INSEAD",
+      "source": "Prices and Markets (recommended); Uncertainty, Data and Judgment",
+      "status": "seed"
+    },
+    {
+      "title": "The Goal",
+      "author": "Eliyahu Goldratt",
+      "domain": "Operations",
+      "school": "INSEAD",
+      "source": "Process and Operations Management (textbook)",
+      "status": "seed"
+    },
+    {
+      "title": "The Black Swan",
+      "author": "Nassim Nicholas Taleb",
+      "domain": "Risk and uncertainty",
+      "school": "INSEAD",
+      "source": "Understanding and Managing Risk",
+      "status": "seed"
+    },
+    {
+      "title": "Against the Gods",
+      "author": "Peter Bernstein",
+      "domain": "Risk (history of)",
+      "school": "INSEAD",
+      "source": "Understanding and Managing Risk (recommended reading)",
+      "status": "seed"
+    },
+    {
+      "title": "Freakonomics",
+      "author": "Steven Levitt and Stephen Dubner",
+      "domain": "Economics",
+      "school": "INSEAD",
+      "source": "Prices and Markets (recommended; Sessions 1 to 2)",
+      "status": "seed"
+    },
+    {
+      "title": "The Art of Strategy",
+      "author": "Avinash Dixit and Barry Nalebuff",
+      "domain": "Game theory",
+      "school": "INSEAD",
+      "source": "Prices and Markets (recommended)",
+      "status": "seed"
+    },
+    {
+      "title": "Effectuation",
+      "author": "Saras Sarasvathy",
+      "domain": "Entrepreneurship",
+      "school": "INSEAD",
+      "source": "Corporate Entrepreneurship; Realising Entrepreneurial Potential (ETA)",
+      "status": "seed"
+    },
+    {
+      "title": "Power: Why Some People Have It and Others Don't",
+      "author": "Jeffrey Pfeffer",
+      "year": 2010,
+      "domain": "Influence and power",
+      "school": "Wharton",
+      "professor": "Cade Massey",
+      "source": "OIDD/LGST 6930 Influence, Session 1 'A Just World', secondary reading",
+      "added": "2026-10-19",
+      "status": "carded"
+    },
+    {
+      "title": "The Education of an Idealist",
+      "author": "Samantha Power",
+      "year": 2019,
+      "domain": "Leadership and public service",
+      "school": "Wharton",
+      "professor": "Cade Massey",
+      "source": "Arthur's capture in OIDD/LGST 6930 Influence, 19/10/2026 (the course's assigned Power reading is 'Chasing the Flame', Session 2)",
+      "added": "2026-10-19",
+      "status": "carded"
+    },
+    {
+      "title": "Power and Progress",
+      "author": "Daron Acemoglu and Simon Johnson",
+      "year": 2023,
+      "domain": "Technology and society",
+      "school": "Personal",
+      "source": "Arthur's Ambidex capture T-0060, 21/10/2026",
+      "added": "2026-10-26",
+      "status": "carded"
+    },
+    {
+      "title": "War Is a Racket",
+      "author": "Smedley D. Butler",
+      "year": 1935,
+      "domain": "History",
+      "school": "Personal",
+      "recommended_by": "Michal",
+      "source": "Arthur's Ambidex capture T-0061, 22/10/2026 ('books about war recommended by Michal')",
+      "added": "2026-10-26",
+      "status": "carded"
+    },
+    {
+      "title": "Just Mercy",
+      "author": "Bryan Stevenson",
+      "year": 2014,
+      "domain": "Justice",
+      "school": "Wharton",
+      "source": "MGMT 7860 Reforming Mass Incarceration, Session 1 (required book); Ambidex capture T-0113, 22/10/2026",
+      "added": "2026-10-26",
+      "status": "carded"
+    },
+    {
+      "title": "The Billionaire's Vinegar",
+      "author": "Benjamin Wallace",
+      "year": 2008,
+      "domain": "Markets",
+      "school": "Personal",
+      "source": "Arthur's Ambidex capture T-0117, 26/10/2026",
+      "added": "2026-10-26",
+      "status": "carded"
+    },
+    {
+      "title": "The Power Broker",
+      "author": "Robert A. Caro",
+      "year": 1974,
+      "domain": "Influence and power",
+      "school": "Wharton",
+      "professor": "Cade Massey",
+      "source": "OIDD/LGST 6930 Influence, Session 3 'Authority', Primary reading (Ch. 28, Robert Moses); Ambidex capture T-0118, 26/10/2026",
+      "added": "2026-10-26",
+      "status": "carded",
+      "no_ai_cards": "Massey Primary reading. Carded 26/10/2026 at Arthur's request for the side project, not for the course."
+    },
+    {
+      "title": "Chasing the Flame",
+      "author": "Samantha Power",
+      "year": 2008,
+      "domain": "Leadership and public service",
+      "school": "Wharton",
+      "professor": "Cade Massey",
+      "source": "OIDD/LGST 6930 Influence, Session 2 'Pragmatism', Primary reading (Ch. 15-16); Ambidex capture T-0048, 21/10/2026",
+      "added": "2026-10-26",
+      "status": "carded",
+      "no_ai_cards": "Massey Primary reading. Carded 26/10/2026 at Arthur's request for the side project, not for the course."
+    }
   ]
 }
