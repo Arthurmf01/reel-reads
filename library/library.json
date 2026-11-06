@@ -213,7 +213,8 @@
       "source": "Ambidex capture T-0166, 05/11/2026",
       "added": "2026-11-06",
       "status": "queued",
-      "note": "HBO documentary built on footage filmed by men inside Alabama's prisons on smuggled phones: violence, deaths in custody and forced labour. HBO Max in the US."
+      "note": "HBO documentary built on footage filmed by men inside Alabama's prisons on smuggled phones: violence, deaths in custody and forced labour. HBO Max in the US.",
+      "rating": "IMDb 7.8 (via yidio.com, 06/11/2026)"
     },
     {
       "title": "Tip Toe",
@@ -224,7 +225,8 @@
       "source": "Ambidex capture T-0139, 01/11/2026",
       "added": "2026-11-06",
       "status": "queued",
-      "note": "Russell T Davies thriller: two neighbours become enemies as online anti-LGBTQ hate escalates. About anti-woke hostility, not anti-woke itself. Starz in the US, Channel 4 in the UK."
+      "note": "Russell T Davies thriller: two neighbours become enemies as online anti-LGBTQ hate escalates. About anti-woke hostility, not anti-woke itself. Starz in the US, Channel 4 in the UK.",
+      "rating": "IMDb 8.2 (via moviemeter.com, 06/11/2026)"
     },
     {
       "title": "Years and Years",
@@ -235,7 +237,8 @@
       "source": "Ambidex capture T-0138, 01/11/2026",
       "added": "2026-11-06",
       "status": "queued",
-      "note": "One Manchester family across 15 years of political, tech and climate upheaval; Emma Thompson as a populist. Six hour-long episodes, HBO Max."
+      "note": "One Manchester family across 15 years of political, tech and climate upheaval; Emma Thompson as a populist. Six hour-long episodes, HBO Max.",
+      "rating": "IMDb 8.3 (via ratingraph.com, 06/11/2026)"
     },
     {
       "title": "Furious",
@@ -246,7 +249,8 @@
       "source": "Ambidex capture T-0138, 01/11/2026 (Hulu show, ~80% the one meant)",
       "added": "2026-11-06",
       "status": "queued",
-      "note": "Emmy Rossum as an FBI agent hunting a serial killer, from Elizabeth Meriwether. Eight episodes on Hulu (about 80% sure this is the one you meant)."
+      "note": "Emmy Rossum as an FBI agent hunting a serial killer, from Elizabeth Meriwether. Eight episodes on Hulu (about 80% sure this is the one you meant).",
+      "rating": "Rotten Tomatoes 98% critics (entertainmentnow.com, 08/2026)"
     },
     {
       "title": "Russian Doll",
@@ -257,7 +261,8 @@
       "source": "Ambidex capture T-0137, 01/11/2026",
       "added": "2026-11-06",
       "status": "queued",
-      "note": "Natasha Lyonne keeps dying and restarting the same night in New York. Two short seasons on Netflix; season 1 stands alone."
+      "note": "Natasha Lyonne keeps dying and restarting the same night in New York. Two short seasons on Netflix; season 1 stands alone.",
+      "rating": "IMDb 7.7 (imdb.com, 06/11/2026)"
     },
     {
       "title": "Poker Face",
@@ -268,7 +273,8 @@
       "source": "Ambidex capture T-0136, 31/10/2026",
       "added": "2026-11-06",
       "status": "queued",
-      "note": "Rian Johnson mystery: Natasha Lyonne can always tell when someone is lying, one case per episode. Peacock. The \"bullshitting series\"."
+      "note": "Rian Johnson mystery: Natasha Lyonne can always tell when someone is lying, one case per episode. Peacock. The \"bullshitting series\".",
+      "rating": "Rotten Tomatoes 100% critics, S1 at launch (thepinknews.com, 01/2023)"
     },
     {
       "title": "Caniba",
@@ -279,7 +285,8 @@
       "source": "Ambidex capture T-0140, 01/11/2026",
       "added": "2026-11-06",
       "status": "queued",
-      "note": "Art-house documentary on Issei Sagawa, who killed and cannibalised a fellow student in Paris in 1981 and was never tried. Graphic and slow."
+      "note": "Art-house documentary on Issei Sagawa, who killed and cannibalised a fellow student in Paris in 1981 and was never tried. Graphic and slow.",
+      "rating": "IMDb 5.6 (via moviemeter.com, 06/11/2026)"
     },
     {
       "title": "Westworld",
@@ -290,7 +297,19 @@
       "source": "Ambidex capture T-0115, 24/10/2026",
       "added": "2026-11-06",
       "status": "queued",
-      "note": "HBO: a theme park of android hosts who start to become self-aware. A pop-culture frame for agent autonomy and alignment."
+      "note": "HBO: a theme park of android hosts who start to become self-aware. A pop-culture frame for agent autonomy and alignment.",
+      "rating": "IMDb 8.3 average across episodes (via episodes.cool, 06/11/2026)"
+    },
+    {
+      "title": "Singapura",
+      "type": "series",
+      "creator": "Elsa Marpeau",
+      "year": 2026,
+      "domain": "Expat thriller, Singapore",
+      "note": "French Canal+ thriller in six episodes: a murder exposes the hidden lives of Singapore's French expat community. Streams on Canal+ from 02/11/2026; on the list as a personal watch.",
+      "source": "Ambidex capture T-0168, 06/11/2026",
+      "added": "2026-11-06",
+      "status": "queued"
     }
   ]
 }

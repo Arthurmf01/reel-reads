@@ -11,7 +11,11 @@ Screen items take --note: the "why watch" line shown on the Library shelf (premi
 where it streams, why it is on the list). After an add, the shelf data embedded in
 both mockup pages is refreshed (republishing the artifact stays a manual step).
 
-Prints `added: <title>` or `exists: <title>` and exits 0; exits 2 on bad input.
+--rating is a public rating WITH its source, e.g. "IMDb 7.1 (imdb.com, 06/11/2026)";
+only pass one you actually looked up. Re-running on an existing title fills in a
+missing note or rating (never overwrites) and prints `updated:`.
+
+Prints `added:`, `updated:` or `exists: <title>` and exits 0; exits 2 on bad input.
 It never commits: the repo is public, a human reviews and commits.
 """
 from __future__ import annotations
@@ -29,7 +33,7 @@ LIBRARY = Path(__file__).resolve().parent / "library.json"
 MOCKUP = Path(__file__).resolve().parent.parent / "mockup"
 PAGES = (MOCKUP / "reel-reads-mockup.html", MOCKUP / "reel-reads-mockup.template.html")
 DATA_RE = re.compile(r'(<script type="application/json" id="libraryData">)(.*?)(</script>)', re.S)
-SHELF_FIELDS = ("title", "type", "author", "creator", "year", "domain", "status", "note")
+SHELF_FIELDS = ("title", "type", "author", "creator", "year", "domain", "status", "note", "rating")
 TYPES = ("book", "film", "series", "documentary")
 SCREEN = ("film", "series", "documentary")
 
@@ -54,16 +58,24 @@ def find(books: List[Dict], title: str, kind: str) -> Optional[Dict]:
 
 def add(library: Path, kind: str, title: str, creator: str, source: str,
         year: Optional[int] = None, domain: Optional[str] = None,
-        today: Optional[str] = None, note: Optional[str] = None) -> bool:
-    """Append a queued entry. Returns False (and writes nothing) if it is already there."""
+        today: Optional[str] = None, note: Optional[str] = None,
+        rating: Optional[str] = None) -> str:
+    """Append a queued entry: "added". An existing entry only gains a missing note or
+    rating: "updated"; otherwise nothing is written: "exists"."""
     if kind not in TYPES:
         raise ValueError(f"type must be one of {TYPES}")
     if not title.strip() or not source.strip():
         raise ValueError("title and source are required (only add traceable titles)")
     data = json.loads(library.read_text(encoding="utf-8"))
     books = data["books"]
-    if find(books, title, kind):
-        return False
+    found = find(books, title, kind)
+    if found:
+        extra = {k: v.strip() for k, v in (("note", note), ("rating", rating)) if v and v.strip() and not found.get(k)}
+        if not extra:
+            return "exists"
+        found.update(extra)
+        _write(library, data)
+        return "updated"
     entry: Dict = {"title": title.strip(), "type": kind}
     entry["creator" if kind in SCREEN else "author"] = creator.strip()
     if year:
@@ -72,12 +84,18 @@ def add(library: Path, kind: str, title: str, creator: str, source: str,
         entry["domain"] = domain.strip()
     if note:
         entry["note"] = note.strip()
+    if rating:
+        entry["rating"] = rating.strip()
     entry.update(source=source.strip(), added=today or date.today().isoformat(), status="queued")
     books.append(entry)
+    _write(library, data)
+    return "added"
+
+
+def _write(library: Path, data: Dict) -> None:
     tmp = library.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     tmp.replace(library)
-    return True
 
 
 def shelf_json(library: Path) -> str:
@@ -111,6 +129,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     ap.add_argument("--year", type=int)
     ap.add_argument("--domain")
     ap.add_argument("--note", help="screen items: premise, where it streams, why it is on the list")
+    ap.add_argument("--rating", help='public rating with its source, e.g. "IMDb 7.1 (imdb.com, 06/11/2026)"')
     ap.add_argument("--embed-only", action="store_true", help="just refresh the shelf data in the pages")
     ap.add_argument("--library", type=Path, default=LIBRARY)
     if argv is None and "--embed-only" in sys.argv:
@@ -118,13 +137,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
     a = ap.parse_args(argv)
     try:
-        added = add(a.library, a.type, a.title, a.creator, a.source, a.year, a.domain, note=a.note)
+        result = add(a.library, a.type, a.title, a.creator, a.source, a.year, a.domain,
+                     note=a.note, rating=a.rating)
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
-    if added and a.library == LIBRARY:
+    if result != "exists" and a.library == LIBRARY:
         embed(a.library)
-    print(f"{'added' if added else 'exists'}: {a.title}")
+    print(f"{result}: {a.title}")
     return 0
 
 
