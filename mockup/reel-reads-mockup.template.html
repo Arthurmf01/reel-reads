@@ -228,7 +228,7 @@
     filter: blur(22px) saturate(1.15) brightness(.62); transform: scale(1.12); animation: drift 22s ease-in-out infinite alternate; }
   @keyframes drift { from { transform: scale(1.12) translate3d(-8px, -6px, 0); } to { transform: scale(1.22) translate3d(8px, 6px, 0); } }
   .card.hascover canvas.v { display: none; }
-  .card .coverhero { position: relative; z-index: 2; width: 104px; aspect-ratio: 2 / 3; margin: 0 0 18px; flex: 0 0 auto;
+  .card .coverhero { position: absolute; top: 104px; right: 20px; z-index: 2; width: 88px; aspect-ratio: 2 / 3; margin: 0; flex: 0 0 auto;
     border-radius: 6px; background-size: cover; background-position: center; box-shadow: 0 18px 40px -12px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.12); }
   .book { gap: 12px; }
   .book .cover { width: 44px; height: 66px; border-radius: 4px; flex: 0 0 auto; background-size: cover; background-position: center;
@@ -238,7 +238,8 @@
   .book .bt .author { font-size: 12.5px; }
   .card.shuffled .served { display: none; }
   @media (prefers-reduced-motion: reduce) { .card .coverbg { animation: none; } }
-  @media (max-height: 700px) { .card .coverhero { width: 76px; margin-bottom: 12px; } }
+  @media (max-height: 700px) { .card .coverhero { width: 64px; top: 88px; } }
+  @media (max-width: 720px) { .card .coverhero { top: max(96px, calc(env(safe-area-inset-top) + 70px)); } }
 
   @media (max-width: 720px) {
     body { padding: 0; align-items: stretch; }
@@ -252,6 +253,7 @@
 
   /* Library shelf: books (Read) and films/series/docs (Watch). Off the swipe feed by design. */
   .topright { display: flex; align-items: center; gap: 8px; }
+  @media (max-width: 420px) { .adaptive { font-size: 0; gap: 0; padding: 7px; } }
   .libbtn { font: 600 11px/1 var(--sans); color: #fff; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.28);
     border-radius: 999px; padding: 6px 10px; cursor: pointer; -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); }
   .libbtn:focus-visible, .seg button:focus-visible, .shelf-x:focus-visible, .wrow:focus-visible { outline: 2px solid #7ee6b4; outline-offset: 2px; }
