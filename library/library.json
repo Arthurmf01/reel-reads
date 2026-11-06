@@ -1,5 +1,5 @@
 {
-  "_doc": "Reel Reads library: every book a professor recommended to Arthur or he captured via Ambidex, growing until release. One entry per book. status: 'seed' = in the v1 feed (Docs/Reel Reads Specifications.md, Seed catalogue), 'queued' = in the library, no cards yet, 'carded' = cards generated. Only add a book with a traceable source (course, session, or Arthur's own capture). Never atomise a course's Primary readings with AI where the course bans it (Massey OIDD/LGST 6930 does).",
+  "_doc": "Reel Reads library: every book a professor recommended to Arthur or he captured via Ambidex, plus the films, TV series and documentaries he captured to watch (field `type`: book | film | series | documentary; missing = book; screen items carry `creator` instead of `author`). Books stay the core of the swipe feed, growing until release. One entry per book. status: 'seed' = in the v1 feed (Docs/Reel Reads Specifications.md, Seed catalogue), 'queued' = in the library, no cards yet, 'carded' = cards generated. Only add a book with a traceable source (course, session, or Arthur's own capture). Never atomise a course's Primary readings with AI where the course bans it (Massey OIDD/LGST 6930 does). Add entries with library/add.py (dedupes by title and type).",
   "books": [
     {
       "title": "Blue Ocean Strategy",
@@ -167,6 +167,130 @@
       "added": "2026-10-26",
       "status": "carded",
       "no_ai_cards": "Massey Primary reading. Carded 26/10/2026 at Arthur's request for the side project, not for the course."
+    },
+    {
+      "title": "Managing with Power",
+      "author": "Jeffrey Pfeffer",
+      "year": 1992,
+      "domain": "Influence and power",
+      "source": "Ambidex capture T-0141, 02/11/2026",
+      "added": "2026-11-06",
+      "status": "queued"
+    },
+    {
+      "title": "Jacaranda",
+      "author": "Gaël Faye",
+      "year": 2024,
+      "domain": "Fiction and history (Rwanda)",
+      "source": "Ambidex capture T-0142, 02/11/2026",
+      "added": "2026-11-06",
+      "status": "queued"
+    },
+    {
+      "title": "Quiet",
+      "author": "Susan Cain",
+      "year": 2012,
+      "domain": "Leadership and psychology",
+      "source": "Ambidex capture T-0150, 03/11/2026",
+      "added": "2026-11-06",
+      "status": "queued"
+    },
+    {
+      "title": "Getting Things Done",
+      "author": "David Allen",
+      "year": 2001,
+      "domain": "Productivity",
+      "source": "Ambidex capture T-0125, 27/10/2026",
+      "added": "2026-11-06",
+      "status": "queued"
+    },
+    {
+      "title": "The Alabama Solution",
+      "type": "documentary",
+      "creator": "Andrew Jarecki, Charlotte Kaufman",
+      "year": 2025,
+      "domain": "Justice and prisons",
+      "source": "Ambidex capture T-0166, 05/11/2026",
+      "added": "2026-11-06",
+      "status": "queued",
+      "note": "HBO documentary built on footage filmed by men inside Alabama's prisons on smuggled phones: violence, deaths in custody and forced labour. HBO Max in the US."
+    },
+    {
+      "title": "Tip Toe",
+      "type": "series",
+      "creator": "Russell T Davies",
+      "year": 2026,
+      "domain": "Politics and society",
+      "source": "Ambidex capture T-0139, 01/11/2026",
+      "added": "2026-11-06",
+      "status": "queued",
+      "note": "Russell T Davies thriller: two neighbours become enemies as online anti-LGBTQ hate escalates. About anti-woke hostility, not anti-woke itself. Starz in the US, Channel 4 in the UK."
+    },
+    {
+      "title": "Years and Years",
+      "type": "series",
+      "creator": "Russell T Davies",
+      "year": 2019,
+      "domain": "Politics and technology",
+      "source": "Ambidex capture T-0138, 01/11/2026",
+      "added": "2026-11-06",
+      "status": "queued",
+      "note": "One Manchester family across 15 years of political, tech and climate upheaval; Emma Thompson as a populist. Six hour-long episodes, HBO Max."
+    },
+    {
+      "title": "Furious",
+      "type": "series",
+      "creator": "Elizabeth Meriwether",
+      "year": 2026,
+      "domain": "Crime thriller",
+      "source": "Ambidex capture T-0138, 01/11/2026 (Hulu show, ~80% the one meant)",
+      "added": "2026-11-06",
+      "status": "queued",
+      "note": "Emmy Rossum as an FBI agent hunting a serial killer, from Elizabeth Meriwether. Eight episodes on Hulu (about 80% sure this is the one you meant)."
+    },
+    {
+      "title": "Russian Doll",
+      "type": "series",
+      "creator": "Natasha Lyonne, Leslye Headland, Amy Poehler",
+      "year": 2019,
+      "domain": "Comedy-drama",
+      "source": "Ambidex capture T-0137, 01/11/2026",
+      "added": "2026-11-06",
+      "status": "queued",
+      "note": "Natasha Lyonne keeps dying and restarting the same night in New York. Two short seasons on Netflix; season 1 stands alone."
+    },
+    {
+      "title": "Poker Face",
+      "type": "series",
+      "creator": "Rian Johnson",
+      "year": 2023,
+      "domain": "Mystery",
+      "source": "Ambidex capture T-0136, 31/10/2026",
+      "added": "2026-11-06",
+      "status": "queued",
+      "note": "Rian Johnson mystery: Natasha Lyonne can always tell when someone is lying, one case per episode. Peacock. The \"bullshitting series\"."
+    },
+    {
+      "title": "Caniba",
+      "type": "documentary",
+      "creator": "Véréna Paravel, Lucien Castaing-Taylor",
+      "year": 2017,
+      "domain": "True crime (Issei Sagawa)",
+      "source": "Ambidex capture T-0140, 01/11/2026",
+      "added": "2026-11-06",
+      "status": "queued",
+      "note": "Art-house documentary on Issei Sagawa, who killed and cannibalised a fellow student in Paris in 1981 and was never tried. Graphic and slow."
+    },
+    {
+      "title": "Westworld",
+      "type": "series",
+      "creator": "Jonathan Nolan, Lisa Joy",
+      "year": 2016,
+      "domain": "AI and consciousness",
+      "source": "Ambidex capture T-0115, 24/10/2026",
+      "added": "2026-11-06",
+      "status": "queued",
+      "note": "HBO: a theme park of android hosts who start to become self-aware. A pop-culture frame for agent autonomy and alignment."
     }
   ]
 }
