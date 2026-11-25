@@ -310,6 +310,74 @@
       "source": "Ambidex capture T-0168, 06/11/2026",
       "added": "2026-11-06",
       "status": "queued"
+    },
+    {
+      "title": "Made to Stick: Why Some Ideas Survive and Others Die",
+      "type": "book",
+      "author": "Chip Heath and Dan Heath",
+      "year": 2007,
+      "domain": "Communication",
+      "source": "Ambidex capture T-0185, 09/11/2026",
+      "added": "2026-11-10",
+      "status": "queued"
+    },
+    {
+      "title": "Rhetoric",
+      "type": "book",
+      "author": "Aristotle",
+      "domain": "Communication",
+      "source": "Ambidex capture T-0186, 09/11/2026",
+      "added": "2026-11-10",
+      "status": "queued"
+    },
+    {
+      "title": "Six Thinking Hats",
+      "type": "book",
+      "author": "Edward de Bono",
+      "year": 1985,
+      "domain": "Thinking and decision-making",
+      "source": "Ambidex capture T-0223, 11/11/2026",
+      "added": "2026-11-11",
+      "status": "queued"
+    },
+    {
+      "title": "Co-Intelligence: Living and Working with AI",
+      "type": "book",
+      "author": "Ethan Mollick",
+      "year": 2024,
+      "domain": "AI",
+      "source": "Arthur, ahead of call with Laura Zarrow (Wharton GAIL), 12/11/2026",
+      "added": "2026-11-12",
+      "status": "queued"
+    },
+    {
+      "title": "Behave: The Biology of Humans at Our Best and Worst",
+      "type": "book",
+      "author": "Robert Sapolsky",
+      "year": 2017,
+      "domain": "biology of behaviour",
+      "source": "Ambidex capture T-0260, 18/11/2026",
+      "added": "2026-11-19",
+      "status": "queued"
+    },
+    {
+      "title": "The Future of Power",
+      "type": "book",
+      "author": "Joseph S. Nye Jr.",
+      "year": 2011,
+      "domain": "power and geopolitics",
+      "source": "Ambidex capture T-0261, 18/11/2026",
+      "added": "2026-11-19",
+      "status": "queued"
+    },
+    {
+      "title": "The Infinity Machine: Demis Hassabis, DeepMind, and the Quest for Superintelligence",
+      "type": "book",
+      "author": "Sebastian Mallaby",
+      "domain": "AI",
+      "source": "AI Club WhatsApp, recommended by Sebastián Torres, 23/11/2026",
+      "added": "2026-11-23",
+      "status": "queued"
     }
   ]
 }
