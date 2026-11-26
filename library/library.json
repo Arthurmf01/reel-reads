@@ -378,6 +378,27 @@
       "source": "AI Club WhatsApp, recommended by Sebastián Torres, 23/11/2026",
       "added": "2026-11-23",
       "status": "queued"
+    },
+    {
+      "title": "Hershey",
+      "type": "film",
+      "creator": "Mark Waters",
+      "year": 2026,
+      "domain": "founder biopic",
+      "note": "Biopic of Milton Hershey, the chocolatier who built a company and a town in Pennsylvania, with Finn Wittrock and Alexandra Daddario. In US cinemas from late November 2026 (Angel Studios); a founder story worth a watch from Philadelphia.",
+      "source": "Ambidex capture T-0314, 25/11/2026",
+      "added": "2026-11-26",
+      "status": "queued"
+    },
+    {
+      "title": "The Qualified Sales Leader",
+      "type": "book",
+      "author": "John McMahon",
+      "year": 2021,
+      "domain": "Sales leadership",
+      "source": "Recommended by Eleanor-Jo Cuckney (Livewire Recruitment), headhunter call 26/11/2026; ticket T-0317",
+      "added": "2026-11-26",
+      "status": "queued"
     }
   ]
 }
